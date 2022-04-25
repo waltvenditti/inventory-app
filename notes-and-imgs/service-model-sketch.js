@@ -2,20 +2,22 @@
 
 SERVICES
 
-- part install
-- part repair
+- part install:
+  - wheel install
+  - crankset install
+  - drivetrain install
+  - tire install
+
+- part repair:
+  - wheel repair
+  - crankset repair
+  - drivetrain repair
+  - tire repair
+
+- bike tire tube replacement
 - bike tune-up
 - bike overhall
-- bike disassembly
-- bike assembly
-
-{
-  service: <service-name>,
-  associatedItems: [],
-}
-
-
-
-
+- bike disassembly (omitted)
+- bike assembly (omitted)
 
 */
