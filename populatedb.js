@@ -70,7 +70,7 @@ function bikeCreate(bike_name, price, year, manf, frame, wheels, crankset, drive
   }
   if (bike_class != false) bikedetail.class = bike_class;
   if (services != false) bikedetail.services = services;
-  if (invCount != false) bikedetail.invCount = invCount;
+  if (invCount !== false) bikedetail.invCount = invCount;
 
   var bike = new Bike(bikedetail);
 

@@ -28,6 +28,7 @@ block content
     each mountain_bike in mountain_bike_list
       li(class="list-items")
         a(href=mountain_bike.url)  #{mountain_bike.manf} - #{mountain_bike.bike} - $#{mountain_bike.price}
+        |: #{mountain_bike.invCount} in stock
     
     else
       li There are no bikes.
