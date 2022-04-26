@@ -1,9 +1,33 @@
 var Service = require("../models/service");
 
+var async = require("async");
 
 // Display list of all services
-exports.service_list = function (req, res) {
-  res.send("NOT IMPLEMENTED: service list");
+exports.service_list = function (req, res, next) {
+  async.parallel(
+    {
+      part_services: function (callback) {
+        Service.find({ serviceType: "Part" }, "service price")
+          .sort({ service: 1 })
+          .exec(callback);
+      },
+      bike_services: function (callback) {
+        Service.find({ serviceType: "Bike" }, "service price")
+          .sort({ service: 1 })
+          .exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) { 
+        return next(err); 
+      }
+      res.render("service_list", {
+        title: "Service Inventory",
+        part_service_list: results.part_services,
+        bike_service_list: results.bike_services,
+      });
+    }
+  );
 };
 
 // Display info page for a specific service

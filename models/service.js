@@ -6,7 +6,8 @@ var ServiceSchema = new Schema (
   {
     service: {type: String, required: true},
     price: {type: Number, required: true},
-    desc: {type: String}
+    desc: {type: String},
+    serviceType: {type: String, enum: ['Part', 'Bike']},
   }
 )
 

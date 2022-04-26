@@ -1,0 +1,44 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  p(class="list-header") #[strong Wheels]
+  ul
+    each wheel in wheel_list
+      li(class="list-items")
+        a(href=wheel.url)  #{wheel.manf} - #{wheel.name} - $#{wheel.price}
+        |: #{wheel.invCount} in stock
+    
+    else
+      li There are no wheels.
+
+  p(class="list-header") #[strong Cranksets]
+  ul
+    each crankset in crankset_list
+      li(class="list-items")
+        a(href=crankset.url)  #{crankset.manf} - #{crankset.name} - $#{crankset.price}
+        |: #{crankset.invCount} in stock
+    
+    else
+      li There are no cranksets.
+
+  p(class="list-header") #[strong Drivetrains]
+  ul
+    each drivetrain in drivetrain_list
+      li(class="list-items")
+        a(href=drivetrain.url)  #{drivetrain.manf} - #{drivetrain.name} - $#{drivetrain.price}
+        |: #{drivetrain.invCount} in stock
+    
+    else
+      li There are no drivetrains.
+
+  p(class="list-header") #[strong Tires]
+  ul
+    each tire in tire_list
+      li(class="list-items")
+        a(href=tire.url)  #{tire.manf} - #{tire.name} - $#{tire.price}
+        |: #{tire.invCount} in stock
+    
+    else
+      li There are no tires.

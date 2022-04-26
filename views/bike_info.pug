@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  h1 Bike Info: #{title}
+
+  p #[strong Name: ] #{bike.bike}
+  p #[strong Manufacturer: ] #{bike.manf}
+  p #[strong Price: ] $#{bike.price}
+  p #[strong Year: ] #{bike.year}
+  p #[strong Bike Class: ] #{bike.class}
+  p #[strong Frame Material: ] #{bike.frame}
+  
+  if bike.wheels.wheelsObj
+    p #[strong Wheels: ] 
+      a(href=bike.wheels.wheelsObj.url) #{bike.wheels.wheelsString}
+  else 
+    p #[strong Wheels: ] #{bike.wheels.wheelsString}
+
+  if bike.crankset.cranksetObj
+    p #[strong Crankset: ] 
+      a(href=bike.crankset.cranksetObj.url) #{bike.crankset.cranksetString}
+  else 
+    p #[strong Crankset: ] #{bike.crankset.cranksetString}
+
+  if bike.drivetrain.drivetrainObj
+    p #[strong Drivetrain: ] 
+      a(href=bike.drivetrain.drivetrainObj.url) #{bike.drivetrain.drivetrainString}
+  else 
+    p #[strong Drivetrain: ] #{bike.drivetrain.drivetrainString}
+
+  p #[strong Brakes: ] #{bike.brakes}
+
+  if bike.tires.tiresObj
+    p #[strong Tires: ] 
+      a(href=bike.tires.tiresObj.url) #{bike.tires.tiresString}
+  else 
+    p #[strong Tires: ] #{bike.tires.tiresString}
+
+  p #[strong Number in Stock: ]  #{bike.invCount}
+
+  p #[strong Services Available: ]
+    ul
+      each service in bike.services 
+        li 
+          a(href=service.url) #{service.service}
+
+  hr
+  p 
+    a(href=bike.url+"/update") Update Bike Info
+  p 
+    a(href=bike.url+"/delete") Delete Bike
+  
+  

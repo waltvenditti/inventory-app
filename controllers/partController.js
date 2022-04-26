@@ -1,9 +1,45 @@
 var Part = require("../models/part");
 
+var async = require("async");
 
 // Display list of all parts
-exports.part_list = function (req, res) {
-  res.send("NOT IMPLEMENTED: part list");
+exports.part_list = function (req, res, next) {
+  async.parallel(
+    {
+      wheels: function (callback) {
+        Part.find({ type: "Wheel" }, "name manf price invCount")
+          .sort({ manf: 1 })
+          .exec(callback);
+      },
+      cranksets: function (callback) {
+        Part.find({ type: "Crankset" }, "name manf price invCount")
+          .sort({ manf: 1 })
+          .exec(callback);
+      },
+      drivetrains: function (callback) {
+        Part.find({ type: "Drivetrain" }, "name manf price invCount")
+          .sort({ manf: 1 })
+          .exec(callback);
+      },
+      tires: function (callback) {
+        Part.find({ type: "Tire" }, "name manf price invCount")
+          .sort({ manf: 1 })
+          .exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) { 
+        return next(err); 
+      }
+      res.render("part_list", {
+        title: "Parts Inventory",
+        wheel_list: results.wheels,
+        crankset_list: results.cranksets,
+        drivetrain_list: results.drivetrains,
+        tire_list: results.tires,
+      });
+    }
+  );
 };
 
 // Display info page for a specific part

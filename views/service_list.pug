@@ -1,0 +1,24 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  p(class="list-header") #[strong Part Services]
+  ul
+    each part_service in part_service_list
+      li(class="list-items")
+        a(href=part_service.url)  #{part_service.service} - $#{part_service.price}
+        |: #{part_service.invCount} in stock
+    
+    else
+      li There are no part services.
+
+  p(class="list-header") #[strong Bike Services]
+  ul
+    each bike_service in bike_service_list
+      li(class="list-items")
+        a(href=bike_service.url)  #{bike_service.service} - $#{bike_service.price}
+        |: #{bike_service.invCount} in stock
+    
+    else
+      li There are no bike services.

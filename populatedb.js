@@ -92,7 +92,7 @@ function partCreate(part_name, price, type, manf, specs, sizeInfo, services, inv
   if (specs != false) partdetail.specs = specs;
   if (sizeInfo != []) partdetail.sizeInfo = sizeInfo;
   if (services != []) partdetail.services = services;
-  if (invCount != false) partdetail.invCount = invCount;
+  if (invCount !== false) partdetail.invCount = invCount;
 
   var part = new Part(partdetail);
 
@@ -107,9 +107,10 @@ function partCreate(part_name, price, type, manf, specs, sizeInfo, services, inv
   })
 }
 
-function serviceCreate(service, price, desc, cb) {
+function serviceCreate(service, price, desc, serviceType, cb) {
   servicedetail = { service: service, price: price };
   if (desc != false) servicedetail.desc = desc;
+  if (serviceType != false) servicedetail.serviceType = serviceType;
 
   var service = new Service(servicedetail);
 
@@ -128,39 +129,39 @@ function createServices(cb) {
   console.log("Starting createServices")
   async.series(
     [
-      // service, price, desc, cb
+      // service, price, desc, serviceType cb
       function(callback) { // 0
-        serviceCreate("Install Wheel", 15, "Install the wheel onto the customer's bike.", callback);
+        serviceCreate("Install Wheel", 15, "Install the wheel onto the customer's bike.", "Part", callback);
       },
       function(callback) { // 1
-        serviceCreate("Install Crankset", 30, "Install and adjust a crankset onto the customer's bike.", callback);
+        serviceCreate("Install Crankset", 30, "Install and adjust a crankset onto the customer's bike.", "Part", callback);
       },
       function(callback) { // 2
-        serviceCreate("Install Drivetrain", 40, "Install and adjust a drivetrain onto the customer's bike.", callback);
+        serviceCreate("Install Drivetrain", 40, "Install and adjust a drivetrain onto the customer's bike.", "Part", callback);
       },
       function(callback) { // 3
-        serviceCreate("Install Tire", 10, "Install a tire onto the customer's bike.", callback);
+        serviceCreate("Install Tire", 10, "Install a tire onto the customer's bike.", "Part", callback);
       },
       function(callback) { // 4
-        serviceCreate("Repair Wheel", 25, "Attempt a repair of the customer's wheel.", callback);
+        serviceCreate("Repair Wheel", 25, "Attempt a repair of the customer's wheel.", "Part", callback);
       },
       function(callback) { // 5
-        serviceCreate("Repair Crankset", 25, "Attempt a repair of the customer's wheel.", callback);
+        serviceCreate("Repair Crankset", 25, "Attempt a repair of the customer's wheel.", "Part", callback);
       },
       function(callback) { // 6
-        serviceCreate("Repair Drivetrain", 25, "Attempt a repair of the customer's drivetrain.", callback);
+        serviceCreate("Repair Drivetrain", 25, "Attempt a repair of the customer's drivetrain.", "Part", callback);
       },
       function(callback) { // 7
-        serviceCreate("Repair Tire", 15, "Attempt a repair of the customer's tire (only attempt if damage not on sidewall).", callback);
+        serviceCreate("Repair Tire", 15, "Attempt a repair of the customer's tire (only attempt if damage not on sidewall).", "Part", callback);
       },
       function(callback) { // 8
-        serviceCreate("Bike Tire Tube Replacement", 10, "Replace the tube for customers tire. Price of tube not included in price.", callback);
+        serviceCreate("Bike Tire Tube Replacement", 10, "Replace the tube for customers tire. Price of tube not included in price.", "Bike", callback);
       },
       function(callback) { // 9
-        serviceCreate("Bike Tune-up", 60, "True wheels, perform braking and shifting adjustments, and run thorough diagnostics.", callback);
+        serviceCreate("Bike Tune-up", 60, "True wheels, perform braking and shifting adjustments, and run thorough diagnostics.", "Bike", callback);
       },
       function(callback) { // 10
-        serviceCreate("Bike Overhall", 120, "Everything in the bike tune-up, plus a cleaning of the drivechain and a cleaning & inspection of the bottom bracket.", callback);
+        serviceCreate("Bike Overhall", 120, "Everything in the bike tune-up, plus a cleaning of the drivechain and a cleaning & inspection of the bottom bracket.", "Bike", callback);
       },
     ],
     cb);
@@ -198,9 +199,6 @@ function createParts (cb) {
       function(callback) { // 8
         partCreate("Wicked Will", 95.00, "Tire", "Schwalbe", false, ["62-622 (29x2.4in"], [services[3], services[7]], 4, callback);
       },
-      function(callback) { // 9
-        partCreate("Part Not Available", 0.00, false, false, false, false, false, false, callback)
-      }
     ], cb);
 }
 

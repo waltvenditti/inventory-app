@@ -13,17 +13,17 @@ exports.bike_list = function (req, res, next) {
     {
       street_bikes: function (callback) {
         Bike.find({ class: "Street" }, "bike manf price invCount")
-          .sort({ bike: 1 })
+          .sort({ manf: 1 })
           .exec(callback);
       },
       gravel_bikes: function (callback) {
         Bike.find({ class: "Gravel" }, "bike manf price invCount")
-          .sort({ bike: 1 })
+          .sort({ manf: 1 })
           .exec(callback);
       },
       mountain_bikes: function (callback) {
         Bike.find({ class: "Mountain" }, "bike manf price invCount")
-          .sort({ bike: 1 })
+          .sort({ manf: 1 })
           .exec(callback);
       },
     },
@@ -43,7 +43,50 @@ exports.bike_list = function (req, res, next) {
 
 // Display info page for a specific bike
 exports.bike_info = function (req, res) {
-  res.send("NOT IMPLEMENTED: bike info");
+  Bike.findById(req.params.id)
+    .populate({
+      path: "wheels",
+      populate: {
+        path: "wheelsObj",
+        model: "Part",
+      }
+    })
+    .populate({
+      path: "crankset",
+      populate: {
+        path: "cranksetObj",
+        model: "Part",
+      }
+    })
+    .populate({
+      path: "drivetrain",
+      populate: {
+        path: "drivetrainObj",
+        model: "Part",
+      }
+    })
+    .populate({
+      path: "tires",
+      populate: {
+        path: "tiresObj",
+        model: "Part",
+      }
+    })
+    .populate("services")
+    .exec(function (err, bike) {
+      if (err) {
+        return next(err); 
+      }
+      if (bike == null) {
+        var err = new Error("Bike not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("bike_info", {
+        title: `${bike.manf} ${bike.bike}`,
+        bike: bike,
+      })
+    });
 };
 
 // Display bike create form on GET
