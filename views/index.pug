@@ -2,4 +2,12 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  
+  p Click a category to view it's items
+
+  div(class="index-hyperlink")
+    a(href="/index/bikes") Bikes
+  div(class="index-hyperlink")
+    a(href="/index/parts") Parts
+  div(class="index-hyperlink")
+    a(href="/index/services") Services
