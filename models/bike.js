@@ -23,10 +23,10 @@ var BikeSchema = new Schema (
     brakes: {type: String},
     tires: {
       tiresString: {type: String},
-      tiresObj: {Type: Schema.Types.ObjectId, ref: 'Part'},
+      tiresObj: {type: Schema.Types.ObjectId, ref: 'Part'},
     },
     class: {type: String, enum: ['Street', 'Gravel', 'Mountain']},
-    price: {Type: Number, required: true},
+    price: {type: Number, required: true},
     invCount: {type: Number},
     services: [{type: Schema.Types.ObjectId, ref: 'Service'}]
   }

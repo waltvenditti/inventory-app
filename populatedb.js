@@ -12,10 +12,11 @@ if (!userArgs[0].startsWith('mongodb')) {
     return
 }
 */
+
 var async = require("async");
-var Bike = require("./models/bike");
-var Part = require("./models/part");
 var Service = require("./models/service");
+var Part = require("./models/part");
+var Bike = require("./models/bike");
 
 var mongoose = require("mongoose");
 const { type } = require("express/lib/response");
@@ -35,21 +36,37 @@ function bikeCreate(bike_name, price, year, manf, frame, wheels, crankset, drive
   if (manf != false) bikedetail.manf = manf;
   if (frame != false) bikedetail.frame = frame;
   if (wheels != false) {
-    bikedetail.wheels.wheelsString = wheels[0];
-    if (wheels[1] != false) { bikedetail.wheels.wheelsObj = wheels[1]; }
+    let wheelsProps = {};
+    wheelsProps.wheelsString = wheels[0];
+    if (wheels[1] != false) { 
+      wheelsProps.wheelsObj = wheels[1]; 
+    }
+    bikedetail.wheels = wheelsProps;
   }
   if (crankset != false) {
-    bikedetail.crankset.cranksetString = crankset[0];
-    if (crankset[1] != false) { bikedetail.crankset.cranksetObj = crankset[1]; }
+    let cranksetProps = {};
+    cranksetProps.cranksetString = crankset[0];
+    if (crankset[1] != false) { 
+      cranksetProps.cranksetObj = crankset[1]; 
+    }
+    bikedetail.crankset = cranksetProps;
   }
   if (drivetrain != false) {
-    bikedetail.drivetrain.drivetrainString = drivetrain[0];
-    if (drivetrain[1] != false) { bikedetail.drivetrain.drivetrainObj = drivetrain[1]; }
+    let drivetrainProps = {};
+    drivetrainProps.drivetrainString = drivetrain[0];
+    if (drivetrain[1] != false) { 
+      drivetrainProps.drivetrainObj = drivetrain[1]; 
+    }
+    bikedetail.drivetrain = drivetrainProps;
   }
   if (brakes != false) bikedetail.brakes = brakes;
   if (tires != false) {
-    bikedetail.tires.tiresString = tires[0];
-    if (tires[1] != false) { bikedetail.tires.tiresObj = tires[1] }
+    let tiresProps = {};
+    tiresProps.tiresString = tires[0];
+    if (tires[1] != false) { 
+      tiresProps.tiresObj = tires[1]; 
+    }
+    bikedetail.tires = tiresProps;
   }
   if (bike_class != false) bikedetail.class = bike_class;
   if (services != false) bikedetail.services = services;
@@ -108,6 +125,7 @@ function serviceCreate(service, price, desc, cb) {
 }
 
 function createServices(cb) {
+  console.log("Starting createServices")
   async.series(
     [
       // service, price, desc, cb
@@ -149,6 +167,7 @@ function createServices(cb) {
 }
 
 function createParts (cb) {
+  console.log("Starting createParts")
   async.series(
     [
       // part_name, price, type, manf, specs, sizeInfo, services, invCount, cb
@@ -186,6 +205,7 @@ function createParts (cb) {
 }
 
 function createBikes(cb) {
+  console.log("Starting createBikes");
   async.series(
     [
       // bike_name, price, year, manf, frame, @@wheels, @@crankset, @@drivetrain, brakes, @@tires, bike_class, @@services, invCount, cb
