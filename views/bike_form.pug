@@ -37,19 +37,19 @@ block content
         div
           input(type="radio" name="class" id="mountain" value="Mountain")
           label(for="mountain") Mountain
-    div 
-      label(for="wheels") Wheels:
-      select(type="select" placeholder="Select wheel or enter custom" name="wheels")
-        for wheel in wheels 
-          if bike 
-            option(value=wheel._id selected=(bike.wheels.wheelsObj==wheel._id)?"selected":false) #{wheel.manf} #{wheel.name}
-          else 
-            option(value=wheel._id) #{wheel.manf} #{wheel.name}
-        option(value=false) (Custom Entry)
-    
-
-    
-  
+    div.form-group
+      label(for="wheels") Wheels: 
+      input(type="text" name="wheels" value=(undefined===bike ? "" : bike.wheels.wheelsString))
+    div.form-group
+      label(for="crankset") Crankset: 
+      input(type="text" name="crankset" value=(undefined===bike ? "" : bike.crankset.cranksetString))
+    div.form-group
+      label(for="drivetrain") Drivetrain: 
+      input(type="text" name="drivetrain" value=(undefined===bike ? "" : bike.drivetrain.drivetrainString))
+    div.form-group
+      label(for="tires") Tires: 
+      input(type="text" name="tires" value=(undefined===bike ? "" : bike.tires.tiresString))
+    button.form-button(type="submit") Submit
 
   if errors
     ul
