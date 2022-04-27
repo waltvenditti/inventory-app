@@ -1,6 +1,8 @@
 body {
   padding: 36px;
+  padding-top: 24px;
   font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
 }
 
 h1 {
@@ -25,3 +27,15 @@ a {
   font-size: 18px;
 }
 
+.layout-navbar p {
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 8px;
+}
+
+.radio-buttons {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}

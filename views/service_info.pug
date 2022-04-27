@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Service Info: #{title}
+
+  p #[strong Service: ] #{service.service}
+  p #[strong Service Type: ] #{service.serviceType}
+  p #[strong Description: ] #{service.desc}
+  p #[strong Price: ] $#{service.price}
+
+  hr
+  p 
+    a(href=service.url+"/update") Update Service Info
+  p 
+    a(href=service.url+"/delete") Delete Service
+  
+  

@@ -43,8 +43,21 @@ exports.part_list = function (req, res, next) {
 };
 
 // Display info page for a specific part
-exports.part_info = function (req, res) {
-  res.send("NOT IMPLEMENTED: part info");
+exports.part_info = function (req, res, next) {
+  Part.findById(req.params.id)
+    .populate("services")
+    .exec(function (err, part) {
+      if (err) { return next(err); 0}
+      if (part == null) {
+        var err = new Error("Part not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("part_info", {
+        title: `${part.manf} ${part.name} ${part.type}`,
+        part: part,
+      });
+    });
 };
 
 // Display part create form on GET

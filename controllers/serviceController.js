@@ -32,7 +32,19 @@ exports.service_list = function (req, res, next) {
 
 // Display info page for a specific service
 exports.service_info = function (req, res) {
-  res.send("NOT IMPLEMENTED: service info");
+  Service.findById(req.params.id)
+    .exec(function (err, service) {
+      if (err) { return next(err); }
+      if (service == null) {
+        var err = new Error("Service not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("service_info", {
+        title: `${service.service}`,
+        service: service,
+      })
+    });
 };
 
 // Display service create form on GET

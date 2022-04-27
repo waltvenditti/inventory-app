@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div(class="form-group")
+      label(for="bike-name") Bike Name: 
+      input(type="text" placeholder="REQUIRED" name="bike-name" required="true" value=(undefined===bike ? "" : bike.bike))
+    div.form-group
+      label(for="price") Price: 
+      input(type="number" placeholder="REQUIRED" name="price" required="true" value=(undefined===bike ? "" : bike.price))
+    div.form-group
+      label(for="manf") Manufacturer: 
+      input(type="text" placeholder="" name="manf" value=(undefined===bike ? "" : bike.manf))
+    div.form-group
+      label(for="year") Year: 
+      input(type="text" placeholder="" name="year" value=(undefined===bike ? "" : bike.year))
+    div.form-group
+      label(for="frame") Frame Material: 
+      input(type="text" placeholder="Aluminum, Steel, etc." name="frame" value=(undefined===bike ? "" : bike.frame))
+    div.form-group
+      label(for="brakes") Brake Type: 
+      input(type="text" placeholder="Disc, Rim, etc." name="brakes" value=(undefined===bike ? "" : bike.brakes))
+    div.form-group
+      label(for="invCount") Inventory Count: 
+      input(type="number" name="invCount" value=(undefined===bike ? 0 : bike.invCount))
+    div.radio-buttons
+      label Bike Class:
+        br
+        div
+          input(type="radio" name="class" id="street" value="Street")
+          label(for="street") Street
+        div
+          input(type="radio" name="class" id="gravel" value="Gravel")
+          label(for="gravel") Gravel
+        div
+          input(type="radio" name="class" id="mountain" value="Mountain")
+          label(for="mountain") Mountain
+    div 
+      label(for="wheels") Wheels:
+      select(type="select" placeholder="Select wheel or enter custom" name="wheels")
+        for wheel in wheels 
+          if bike 
+            option(value=wheel._id selected=(bike.wheels.wheelsObj==wheel._id)?"selected":false) #{wheel.manf} #{wheel.name}
+          else 
+            option(value=wheel._id) #{wheel.manf} #{wheel.name}
+        option(value=false) (Custom Entry)
+    
+
+    
+  
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

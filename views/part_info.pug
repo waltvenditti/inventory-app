@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 Part Info: #{title}
+
+  p #[strong Part Category: ] #{part.type}
+  p #[strong Name: ] #{part.name}
+  p #[strong Manufacturer: ] #{part.manf}
+  p #[strong Price: ] $#{part.price}
+  p #[strong Specifications: ]
+    ul
+      each spec in part.specs 
+        li #{spec}
+
+  p #[strong Size Info: ]
+    ul
+      each datum in part.sizeInfo 
+        li #{datum}
+
+  p #[strong Number in Stock: ]  #{part.invCount}
+  p #[strong Services Available: ]
+    ul
+      each service in part.services 
+        li 
+          a(href=service.url) #{service.service}
+
+  hr
+  p 
+    a(href=part.url+"/update") Update Part Info
+  p 
+    a(href=part.url+"/delete") Delete Part
+  
+  
