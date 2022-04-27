@@ -134,11 +134,21 @@ exports.bike_update_post = function (req, res) {
 };
 
 // Display form for bike delete GET
+// Displays key info on the bike and asks you to confirm the delete by pressing a DELETE button
 exports.bike_delete_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: bike delete get");
+  Bike.findById(req.params.id).exec(function (err, bike) {
+    if (err) { return next(err); }
+    if (bike==null) {
+      res.redirect("/index/bikes");
+    }
+    res.render("bike_delete", {
+      title: `Delete ${bike.manf} ${bike.bike}`,
+      bike: bike,
+    })
+  })
 };
 
 // Process request for bike delete POST
 exports.bike_delete_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: bike delete post");
+  
 };
