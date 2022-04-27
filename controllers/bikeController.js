@@ -1,7 +1,8 @@
 var Bike = require("../models/bike");
-var Part = require("../models/part");
+var Service = require("../models/service");
 
 var async = require("async");
+const { body, validationResult } = require("express-validator");
 
 // Display home page
 exports.index = function (req, res) {
@@ -68,9 +69,59 @@ exports.bike_create_get = function (req, res) {
 };
 
 // Display bike create on POST
-exports.bike_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: bike create post");
-};
+exports.bike_create_post = [
+  // Validate and sanitize all fields
+  body("bikeName")
+    .trim().isLength({ min: 1 }).escape().withMessage("Bike must have a name."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("Bike must have a price.").isNumeric().withMessage("Price can be numbers (with decimal points) only."),
+  body("year").optional({ checkFalsy: true }).trim().escape(),
+  body("manf").optional({ checkFalsy: true }).trim().escape(),
+  body("frame").optional({ checkFalsy: true }).trim().escape(),
+  body("wheels").optional({ checkFalsy: true }).trim().escape(),
+  body("crankset").optional({ checkFalsy: true }).trim().escape(),
+  body("drivetrain").optional({ checkFalsy: true }).trim().escape(),
+  body("brakes").optional({ checkFalsy: true }).trim().escape(),
+  body("tires").optional({ checkFalsy: true }).trim().escape(),
+  body("class").trim().escape(),
+  body("invCount").trim().escape().isNumeric(),
+
+  // Process request after validation/sanitization
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    Service.find({ serviceType: "Bike" }).sort({ service: 1 }).exec(function (err, results) {
+      if (err) { return next(err); }
+      var bike = new Bike({
+        bike: req.body.bikeName,
+        price: req.body.price,
+        year: req.body.year,
+        manf: req.body.manf,
+        frame: req.body.frame,
+        wheels: req.body.wheels,
+        crankset: req.body.crankset,
+        drivetrain: req.body.drivetrain,
+        brakes: req.body.brakes,
+        tires: req.body.tires,
+        invCount: req.body.invCount,
+        class: req.body.class,
+        services: results,
+      })
+      if (!errors.isEmpty()) {
+        // There are errors. Render form again with sanitized./validated data and error messages
+        res.render("bike_form", {
+          title: "Add New Bike",
+          bike: bike,
+        });
+      } else {
+        bike.save(function (err) {
+          if (err) { return next(err); }
+          // Successful so redirect to page of new bike
+          res.redirect(bike.url);
+        })
+      }
+    });
+  }
+];
 
 // Display form for bike update GET
 exports.bike_update_get = function (req, res) {
