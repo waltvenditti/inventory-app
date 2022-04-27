@@ -39,16 +39,16 @@ block content
           label(for="mountain") Mountain
     div.form-group
       label(for="wheels") Wheels: 
-      input(type="text" name="wheels" value=(undefined===bike ? "" : bike.wheels.wheelsString))
+      input(type="text" name="wheels" value=(undefined===bike ? "" : bike.wheels))
     div.form-group
       label(for="crankset") Crankset: 
-      input(type="text" name="crankset" value=(undefined===bike ? "" : bike.crankset.cranksetString))
+      input(type="text" name="crankset" value=(undefined===bike ? "" : bike.crankset))
     div.form-group
       label(for="drivetrain") Drivetrain: 
-      input(type="text" name="drivetrain" value=(undefined===bike ? "" : bike.drivetrain.drivetrainString))
+      input(type="text" name="drivetrain" value=(undefined===bike ? "" : bike.drivetrain))
     div.form-group
       label(for="tires") Tires: 
-      input(type="text" name="tires" value=(undefined===bike ? "" : bike.tires.tiresString))
+      input(type="text" name="tires" value=(undefined===bike ? "" : bike.tires))
     button.form-button(type="submit") Submit
 
   if errors

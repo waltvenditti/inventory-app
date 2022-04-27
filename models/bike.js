@@ -8,23 +8,11 @@ var BikeSchema = new Schema (
     year: {type: String},
     manf: {type: String},
     frame: {type: String},
-    wheels: {
-      wheelsString: {type: String},
-      wheelObj: {type: Schema.Types.ObjectId, ref: 'Part'},
-    },
-    crankset: {
-      cranksetString: {type: String},
-      cranksetObj: {type: Schema.Types.ObjectId, ref: 'Part'},
-    },
-    drivetrain: {
-      drivetrainString: {type: String},
-      drivetrainObj: {type: Schema.Types.ObjectId, ref: 'Part'},
-    },
+    wheels: {type: String},
+    crankset: {type: String},
+    drivetrain: {type: String},
     brakes: {type: String},
-    tires: {
-      tiresString: {type: String},
-      tiresObj: {type: Schema.Types.ObjectId, ref: 'Part'},
-    },
+    tires: {type: String},
     class: {type: String, enum: ['Street', 'Gravel', 'Mountain']},
     price: {type: Number, required: true},
     invCount: {type: Number},

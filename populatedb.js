@@ -35,39 +35,11 @@ function bikeCreate(bike_name, price, year, manf, frame, wheels, crankset, drive
   if (year != false) bikedetail.year = year;
   if (manf != false) bikedetail.manf = manf;
   if (frame != false) bikedetail.frame = frame;
-  if (wheels != false) {
-    let wheelsProps = {};
-    wheelsProps.wheelsString = wheels[0];
-    if (wheels[1] != false) { 
-      wheelsProps.wheelsObj = wheels[1]; 
-    }
-    bikedetail.wheels = wheelsProps;
-  }
-  if (crankset != false) {
-    let cranksetProps = {};
-    cranksetProps.cranksetString = crankset[0];
-    if (crankset[1] != false) { 
-      cranksetProps.cranksetObj = crankset[1]; 
-    }
-    bikedetail.crankset = cranksetProps;
-  }
-  if (drivetrain != false) {
-    let drivetrainProps = {};
-    drivetrainProps.drivetrainString = drivetrain[0];
-    if (drivetrain[1] != false) { 
-      drivetrainProps.drivetrainObj = drivetrain[1]; 
-    }
-    bikedetail.drivetrain = drivetrainProps;
-  }
+  if (wheels != false) bikedetail.wheels = wheels;
+  if (crankset != false) bikedetail.crankset = crankset;
+  if (drivetrain != false) bikedetail.drivetrain = drivetrain;
   if (brakes != false) bikedetail.brakes = brakes;
-  if (tires != false) {
-    let tiresProps = {};
-    tiresProps.tiresString = tires[0];
-    if (tires[1] != false) { 
-      tiresProps.tiresObj = tires[1]; 
-    }
-    bikedetail.tires = tiresProps;
-  }
+  if (tires != false) bikedetail.tires = tires;
   if (bike_class != false) bikedetail.class = bike_class;
   if (services != false) bikedetail.services = services;
   if (invCount !== false) bikedetail.invCount = invCount;
@@ -208,16 +180,16 @@ function createBikes(cb) {
     [
       // bike_name, price, year, manf, frame, @@wheels, @@crankset, @@drivetrain, brakes, @@tires, bike_class, @@services, invCount, cb
       function(callback) {
-        bikeCreate("Dew Plus", 949.99, "2022", "Kona", "aluminum", ["Double Wall alloy", false], ["Samox 36t", false], ["Shimano Deore 10-speed", parts[5]], "Disc", ["WTB Horizon 650x47c", parts[7]], "Street", [services[8], services[9], services[10]], 2, callback);
+        bikeCreate("Dew Plus", 949.99, "2022", "Kona", "aluminum", "Double Wall alloy", "Samox 36t", "Shimano Deore 10-speed", "Disc", "WTB Horizon 650x47c", "Street", [services[8], services[9], services[10]], 2, callback);
       },
       function(callback) {
-        bikeCreate("Rove AL", 899.99, "2017", "Kona", "Aluminum", ["WTB Freedom Cruz", parts[1]], ["FSA Compact Gear", parts[3]], ["Shimano Claris 10-speed", false], "Disc", ["Schwalbe Delta Cruiser 700x35c", false], "Gravel", [services[8], services[9], services[10]], 0, callback);
+        bikeCreate("Rove AL", 899.99, "2017", "Kona", "Aluminum", "WTB Freedom Cruz", "FSA Compact Gear", "Shimano Claris 10-speed", "Disc", "Schwalbe Delta Cruiser 700x35c", "Gravel", [services[8], services[9], services[10]], 0, callback);
       },
       function(callback) {
-        bikeCreate("SL 2.1", 2699.99, "2022", "Fuji", "Carbon", ["Oval Concepts 527", parts[0]], ["Praxis Zayante Carbon", parts[4]], ["Shimano Ultegra 11-speed", false], "Rim", ["Vittoria Rubino Pro IV 700x25c", false], "Street", [services[8], services[9], services[10]], 1, callback);
+        bikeCreate("SL 2.1", 2699.99, "2022", "Fuji", "Carbon", "Oval Concepts 527", "Praxis Zayante Carbon", "Shimano Ultegra 11-speed", "Rim", "Vittoria Rubino Pro IV 700x25c", "Street", [services[8], services[9], services[10]], 1, callback);
       },
       function(callback) {
-        bikeCreate("Spark 970", 2899.99, "2021", "Scott", "Steel", ["Syncros X-30SE TR", parts[2]], ["SRAM SX Eagle DUB", false], ["SRAM NX Eagle 12-speed", parts[6]], "Disc", ["Schwalbe Wicked Will 29x2.4in", parts[8]], "Mountain", [services[8], services[9], services[10]], 1, callback);
+        bikeCreate("Spark 970", 2899.99, "2021", "Scott", "Steel", "Syncros X-30SE TR", "SRAM SX Eagle DUB", "SRAM NX Eagle 12-speed", "Disc", "Schwalbe Wicked Will 29x2.4in", "Mountain", [services[8], services[9], services[10]], 1, callback);
       },
     ],cb);
 }

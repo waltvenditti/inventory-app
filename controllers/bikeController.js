@@ -45,34 +45,6 @@ exports.bike_list = function (req, res, next) {
 // Display info page for a specific bike
 exports.bike_info = function (req, res, next) {
   Bike.findById(req.params.id)
-    .populate({
-      path: "wheels",
-      populate: {
-        path: "wheelsObj",
-        model: "Part",
-      }
-    })
-    .populate({
-      path: "crankset",
-      populate: {
-        path: "cranksetObj",
-        model: "Part",
-      }
-    })
-    .populate({
-      path: "drivetrain",
-      populate: {
-        path: "drivetrainObj",
-        model: "Part",
-      }
-    })
-    .populate({
-      path: "tires",
-      populate: {
-        path: "tiresObj",
-        model: "Part",
-      }
-    })
     .populate("services")
     .exec(function (err, bike) {
       if (err) { return next(err); }
@@ -90,40 +62,9 @@ exports.bike_info = function (req, res, next) {
 
 // Display bike create form on GET
 exports.bike_create_get = function (req, res) {
-  async.parallel(
-    {
-      wheels: function (callback) {
-        Part.find({ type: "Wheel" })
-          .sort({ manf: 1 })
-          .exec(callback);
-      },
-      cranksets: function (callback) {
-        Part.find({ type: "Crankset" })
-          .sort({ manf: 1 })
-          .exec(callback);
-      },
-      drivetrains: function (callback) {
-        Part.find({ type: "Drivetrain" })
-          .sort({ manf: 1 })
-          .exec(callback);
-      },
-      tires: function (callback) {
-        Part.find({ type: "Tire" })
-          .sort({ manf: 1 })
-          .exec(callback);
-      },  
-    },
-    function (err, results) {
-      if (err) { return next(err); }
-      res.render("bike_form", {
-        title: "Add New Bike",
-        wheels: results.wheels,
-        cranksets: results.cranksets,
-        drivetrains: results.drivetrains,
-        tires: results.tires,
-      });
-    }
-  );
+  res.render("bike_form", {
+    title: "Add New Bike"
+  });
 };
 
 // Display bike create on POST
