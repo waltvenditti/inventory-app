@@ -39,3 +39,14 @@ a {
   margin-top: 12px;
   margin-bottom: 12px;
 }
+
+.form-group-textarea {
+  margin-bottom: 8px;
+}
+.form-group-textarea label {
+  vertical-align: top;
+}
+.form-group-textarea textarea {
+  width: 256px;
+  height: 64px;
+}

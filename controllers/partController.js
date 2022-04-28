@@ -1,6 +1,8 @@
 var Part = require("../models/part");
+var Service = require("../models/service");
 
 var async = require("async");
+const { body, validationResult } = require("express-validator");
 
 // Display list of all parts
 exports.part_list = function (req, res, next) {
@@ -62,13 +64,70 @@ exports.part_info = function (req, res, next) {
 
 // Display part create form on GET
 exports.part_create_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: part create get");
+  res.render("part_form", {
+    title: "Add New Part",
+  });
 };
 
 // Display part create on POST
-exports.part_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: part create post");
-};
+exports.part_create_post = [
+  // Validate and sanitize all fields
+  body("partName").trim().isLength({ min: 1 }).escape().withMessage("Part must have a name."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("Part must have a price.").isNumeric().withMessage("Price can be numbers (with a decimal point) only."),
+  body("invCount").optional({ checkFalsy: true }).trim().escape().isNumeric(),
+  body("manf").optional({ checkFalsy: true }).trim().escape(),
+  body("type").optional({ checkFalsy: true }).trim().escape(),
+  body("specs").optional({ checkFalsy: true }).trim().escape(),
+  body("sizeInfo").optional({ checkFalsy: true }).trim().escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    Service.find({ serviceType: "Part" }).sort({ service: 1 }).exec(function (err, results) {
+      if (err) { return next(err); }
+      // convert strings to arrays
+      let specsArray = req.body.specs.split(",");
+      let sizeInfoArray = req.body.sizeInfo.split(",");
+      // iterate to remove whitespace from array eles
+      for (let i = 0; i < specsArray.length; i++) {
+        specsArray[i] = specsArray[i].trim();
+      }
+      for (let i = 0; i < sizeInfoArray.length; i++) {
+        sizeInfoArray[i] = sizeInfoArray[i].trim();
+      }
+      // check for and remove blank terminal element
+      if (specsArray[specsArray.length-1]==="") {
+        specsArray.pop();
+      }
+      if (sizeInfoArray[sizeInfoArray.length-1]==="") {
+        sizeInfoArray.pop();
+      }
+      // create part obj
+      var part = new Part({
+        name: req.body.partName,
+        price: req.body.price,
+        manf: req.body.manf,
+        type: req.body.type,
+        invCount: req.body.invCount,
+        specs: specsArray,
+        sizeInfo: sizeInfoArray,
+      });
+      // check errors empty
+      if (!errors.isEmpty()) {
+        res.render("part_form", {
+          title: "Add New Part",
+          part: part,
+          errors: errors.array(),
+        })
+      } else {
+        part.save(function (err) {
+          if (err) { return next(err); }
+          res.redirect(part.url);
+        })
+      }
+    });
+  },
+];
 
 // Display form for part update GET
 exports.part_update_get = function (req, res) {

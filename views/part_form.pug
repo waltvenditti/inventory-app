@@ -1,0 +1,48 @@
+extends layout 
+
+block content   
+  h1= title
+
+  form(method="POST" action="")
+    div.form-group
+      label(for="name") Part Name: 
+      input(type="text" placeholder="REQUIRED" name="partName" required="true" value=(part===undefined ? "" : part.name))
+    div.form-group
+      label(for="price") Price: $
+      input(type="number" placeholder="REQUIRED" step="0.01" name="price" required="true" value=(undefined===part ? "" : part.price))
+    div.form-group
+      label(for="manf") Manufacturer:
+      input(type="text" name="manf" value=(part===undefined ? "" : part.manf))
+    div.form-group
+      label(for="invCount") Inventory Count:
+      input(type="number" name="invCount" value=(part===undefined ? 0 : part.invCount))
+    div.radio-buttons
+      label Part Category:
+      br
+      div 
+        input(type="radio" name="type" id="wheel" value="Wheel" checked=(part===undefined ? false : part.type==="Wheel") required)
+        label(for="wheel") Wheel 
+      div 
+        input(type="radio" name="type" id="crankset" value="Crankset" checked=(part===undefined ? false : part.type==="Crankset"))
+        label(for="crankset") Crankset 
+      div 
+        input(type="radio" name="type" id="drivetrain" value="Drivetrain" checked=(part===undefined ? false : part.type==="Drivetrain"))
+        label(for="drivetrain") Drivetrain 
+      div 
+        input(type="radio" name="type" id="tire" value="Tire" checked=(part===undefined ? false : part.type==="Tire"))
+        label(for="tire") Tire
+    div.form-group-textarea
+      label(for="specs") Specifications:
+      textarea(type="text" name="specs" placeholder="Enter specs separated by commas: 8mm, 10-speed, etc" value=(part===undefined ? "" : part.specs.toString()))
+    div.form-group-textarea
+      label(for="sizeInfo") Size Info:
+      textarea(type="text" name="sizeInfo" placeholder="Enter size info separated by commas: 140mm outer, 10mm inner, etc" value=(part===undefined ? "" : part.sizeInfo.toString()))
+    button(type="submit") Submit
+
+  if errors 
+    ul 
+      for error in errors 
+        li!= error.msg
+      
+
+    

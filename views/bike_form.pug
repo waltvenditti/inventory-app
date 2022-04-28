@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
 
-  form(method='POST' action='')
+  form(method="POST" action="")
     div(class="form-group")
       label(for="bikeName") Bike Name: 
       input(type="text" placeholder="REQUIRED" name="bikeName" required="true" value=(undefined===bike ? "" : bike.bike))

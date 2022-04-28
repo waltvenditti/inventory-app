@@ -73,7 +73,7 @@ exports.bike_create_post = [
   // Validate and sanitize all fields
   body("bikeName")
     .trim().isLength({ min: 1 }).escape().withMessage("Bike must have a name."),
-  body("price").trim().isLength({ min: 1 }).escape().withMessage("Bike must have a price.").isNumeric().withMessage("Price can be numbers (with decimal points) only."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("Bike must have a price.").isNumeric().withMessage("Price can be numbers (with a decimal point) only."),
   body("year").optional({ checkFalsy: true }).trim().escape(),
   body("manf").optional({ checkFalsy: true }).trim().escape(),
   body("frame").optional({ checkFalsy: true }).trim().escape(),
@@ -83,7 +83,7 @@ exports.bike_create_post = [
   body("brakes").optional({ checkFalsy: true }).trim().escape(),
   body("tires").optional({ checkFalsy: true }).trim().escape(),
   body("class").trim().escape(),
-  body("invCount").trim().escape().isNumeric(),
+  body("invCount").optional({ checkFalsy: true }).trim().escape().isNumeric(),
 
   // Process request after validation/sanitization
   (req, res, next) => {
