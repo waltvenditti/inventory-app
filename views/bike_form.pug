@@ -9,7 +9,7 @@ block content
       input(type="text" placeholder="REQUIRED" name="bikeName" required="true" value=(undefined===bike ? "" : bike.bike))
     div.form-group
       label(for="price") Price: $
-      input(type="number" placeholder="REQUIRED" name="price" required="true" value=(undefined===bike ? "" : bike.price))
+      input(type="number" placeholder="REQUIRED" step="0.01" name="price" required="true" value=(undefined===bike ? "" : bike.price))
     div.form-group
       label(for="manf") Manufacturer: 
       input(type="text" placeholder="" name="manf" value=(undefined===bike ? "" : bike.manf))
