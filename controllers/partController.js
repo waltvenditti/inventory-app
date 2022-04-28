@@ -83,7 +83,7 @@ exports.part_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    Service.find({ serviceType: "Part" }).sort({ service: 1 }).exec(function (err, results) {
+    Service.find({ serviceType: req.body.type }).sort({ service: 1 }).exec(function (err, results) {
       if (err) { return next(err); }
       // convert strings to arrays
       let specsArray = req.body.specs.split(",");
@@ -160,7 +160,7 @@ exports.part_update_post = [
     // validationResult
     const errors = validationResult(req);
 
-    Service.find({ serviceType: "Part" }).exec(function (err, results) {
+    Service.find({ serviceType: req.body.type }).exec(function (err, results) {
       if (err) { return next(err); }
       // convert strings to arrays
       let specsArray = req.body.specs.split(",");

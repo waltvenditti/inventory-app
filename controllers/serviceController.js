@@ -7,7 +7,14 @@ exports.service_list = function (req, res, next) {
   async.parallel(
     {
       part_services: function (callback) {
-        Service.find({ serviceType: "Part" }, "service price")
+        Service.find({
+          $or:[
+            {serviceType: "Wheel"},
+            {serviceType: "Crankset"},
+            {serviceType: "Drivetrain"},
+            {serviceType: "Tire"}
+          ]
+        }, "service price")
           .sort({ service: 1 })
           .exec(callback);
       },

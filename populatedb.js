@@ -103,28 +103,28 @@ function createServices(cb) {
     [
       // service, price, desc, serviceType cb
       function(callback) { // 0
-        serviceCreate("Install Wheel", 15, "Install the wheel onto the customer's bike.", "Part", callback);
+        serviceCreate("Install Wheel", 15, "Install the wheel onto the customer's bike.", "Wheel", callback);
       },
       function(callback) { // 1
-        serviceCreate("Install Crankset", 30, "Install and adjust a crankset onto the customer's bike.", "Part", callback);
+        serviceCreate("Install Crankset", 30, "Install and adjust a crankset onto the customer's bike.", "Crankset", callback);
       },
       function(callback) { // 2
-        serviceCreate("Install Drivetrain", 40, "Install and adjust a drivetrain onto the customer's bike.", "Part", callback);
+        serviceCreate("Install Drivetrain", 40, "Install and adjust a drivetrain onto the customer's bike.", "Drivetrain", callback);
       },
       function(callback) { // 3
-        serviceCreate("Install Tire", 10, "Install a tire onto the customer's bike.", "Part", callback);
+        serviceCreate("Install Tire", 10, "Install a tire onto the customer's bike.", "Tire", callback);
       },
       function(callback) { // 4
-        serviceCreate("Repair Wheel", 25, "Attempt a repair of the customer's wheel.", "Part", callback);
+        serviceCreate("Repair Wheel", 25, "Attempt a repair of the customer's wheel.", "Wheel", callback);
       },
       function(callback) { // 5
-        serviceCreate("Repair Crankset", 25, "Attempt a repair of the customer's wheel.", "Part", callback);
+        serviceCreate("Repair Crankset", 25, "Attempt a repair of the customer's wheel.", "Crankset", callback);
       },
       function(callback) { // 6
-        serviceCreate("Repair Drivetrain", 25, "Attempt a repair of the customer's drivetrain.", "Part", callback);
+        serviceCreate("Repair Drivetrain", 25, "Attempt a repair of the customer's drivetrain.", "Drivetrain", callback);
       },
       function(callback) { // 7
-        serviceCreate("Repair Tire", 15, "Attempt a repair of the customer's tire (only attempt if damage not on sidewall).", "Part", callback);
+        serviceCreate("Repair Tire", 15, "Attempt a repair of the customer's tire (only attempt if damage not on sidewall).", "Tire", callback);
       },
       function(callback) { // 8
         serviceCreate("Bike Tire Tube Replacement", 10, "Replace the tube for customers tire. Price of tube not included in price.", "Bike", callback);
