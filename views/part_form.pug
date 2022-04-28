@@ -33,10 +33,10 @@ block content
         label(for="tire") Tire
     div.form-group-textarea
       label(for="specs") Specifications:
-      textarea(type="text" name="specs" placeholder="Enter specs separated by commas: 8mm, 10-speed, etc" value=(part===undefined ? "" : part.specs.toString()))
+      textarea(type="text" name="specs" placeholder="Enter specs separated by commas: 8mm, 10-speed, etc") #{(part===undefined) ? "" : part.specs.toString()}
     div.form-group-textarea
       label(for="sizeInfo") Size Info:
-      textarea(type="text" name="sizeInfo" placeholder="Enter size info separated by commas: 140mm outer, 10mm inner, etc" value=(part===undefined ? "" : part.sizeInfo.toString()))
+      textarea(type="text" name="sizeInfo" placeholder="Enter size info separated by commas: 140mm outer, 10mm inner, etc") #{(part===undefined) ? "" : part.sizeInfo.toString()}
     button(type="submit") Submit
 
   if errors 

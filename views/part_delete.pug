@@ -1,0 +1,30 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  p #[strong Part Category: ] #{part.type}
+  p #[strong Name: ] #{part.name}
+  p #[strong Manufacturer: ] #{part.manf}
+  p #[strong Price: ] $#{part.price}
+  p #[strong Specifications: ]
+    ul
+      each spec in part.specs 
+        li #{spec}
+
+  p #[strong Size Info: ]
+    ul
+      each datum in part.sizeInfo 
+        li #{datum}
+
+  p #[strong Number in Stock: ]  #{part.invCount}
+  
+  p Are you sure you want to delete this part? This will completely remove the part from the inventory entirely regardless of inventory count. To adjust the inventory count, use the Update Part feature on the part's 
+    a(href=part.url) info page
+    |. 
+  
+  form(method="POST" action="")
+    div  
+      input(type="hidden" name="partid" required="true" value=part._id)
+
+      button(type="submit") Delete

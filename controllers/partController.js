@@ -131,7 +131,17 @@ exports.part_create_post = [
 
 // Display form for part update GET
 exports.part_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: part update get");
+  Part.findById(req.params.id).exec(function (err, part) {
+    if (err) { return next(err); }
+    if (part===null) {
+      // part not found
+      res.redirect("/index/parts");
+    }
+    res.render("part_form", {
+      title: `Update Part: ${part.manf} ${part.name} ${part.type}`,
+      part: part,
+    });
+  });
 };
 
 // Process part update POST request
@@ -141,10 +151,31 @@ exports.part_update_post = function (req, res) {
 
 // Display form for part delete GET
 exports.part_delete_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: part delete get");
+  Part.findById(req.params.id).exec(function (err, part) {
+    if (err) { return next(err); }
+    if (part===null) {
+      // part not found
+      res.redirect("/index/parts");
+    }
+    res.render("part_delete", {
+      title: `Delete Part: ${part.manf} ${part.name} ${part.type}`,
+      part: part,
+    });
+  });
 };
 
 // Process request for part delete POST
 exports.part_delete_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: part delete post");
+  Part.findById(req.body.partid).exec(function (err, part) {
+    if (err) { return next(err); }
+    if (part==="undefined") {
+      var error = new Error("Part not found");
+      error.status = 404;
+      return next(error);
+    }
+    Part.findByIdAndRemove(req.body.partid, function (err) {
+      if (err) { return next(err); }
+      res.redirect("/index/parts/");
+    });
+  });
 };
