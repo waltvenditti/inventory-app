@@ -7,7 +7,7 @@ block content
   ul
     each street_bike in street_bike_list
       li(class="list-items")
-        a(href=street_bike.url)  #{street_bike.manf} - #{street_bike.bike} - $#{street_bike.price}
+        a(href=street_bike.url)  #{street_bike.manf} #{street_bike.bike} - $#{street_bike.price}
         |: #{street_bike.invCount} in stock
     
     else
@@ -17,7 +17,7 @@ block content
   ul
     each gravel_bike in gravel_bike_list
       li(class="list-items")
-        a(href=gravel_bike.url)  #{gravel_bike.manf} - #{gravel_bike.bike} - $#{gravel_bike.price}
+        a(href=gravel_bike.url)  #{gravel_bike.manf} #{gravel_bike.bike} - $#{gravel_bike.price}
         |: #{gravel_bike.invCount} in stock
     
     else
@@ -27,7 +27,7 @@ block content
   ul
     each mountain_bike in mountain_bike_list
       li(class="list-items")
-        a(href=mountain_bike.url)  #{mountain_bike.manf} - #{mountain_bike.bike} - $#{mountain_bike.price}
+        a(href=mountain_bike.url)  #{mountain_bike.manf} #{mountain_bike.bike} - $#{mountain_bike.price}
         |: #{mountain_bike.invCount} in stock
     
     else

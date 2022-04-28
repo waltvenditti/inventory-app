@@ -29,13 +29,13 @@ block content
       label Bike Class:
         br
         div
-          input(type="radio" name="class" id="street" value="Street")
+          input(type="radio" name="class" id="street" value="Street" checked=(bike===undefined ? true : bike.class==="Street"))
           label(for="street") Street
         div
-          input(type="radio" name="class" id="gravel" value="Gravel")
+          input(type="radio" name="class" id="gravel" value="Gravel" checked=(bike===undefined ? false : bike.class==="Gravel"))
           label(for="gravel") Gravel
         div
-          input(type="radio" name="class" id="mountain" value="Mountain")
+          input(type="radio" name="class" id="mountain" value="Mountain" checked=(bike===undefined ? false : bike.class==="Mountain"))
           label(for="mountain") Mountain
     div.form-group
       label(for="wheels") Wheels: 
