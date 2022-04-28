@@ -111,6 +111,7 @@ exports.part_create_post = [
         invCount: req.body.invCount,
         specs: specsArray,
         sizeInfo: sizeInfoArray,
+        services: results,
       });
       // check errors empty
       if (!errors.isEmpty()) {
@@ -145,9 +146,70 @@ exports.part_update_get = function (req, res) {
 };
 
 // Process part update POST request
-exports.part_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: part update post");
-};
+exports.part_update_post = [
+  // validate/sanitize all fields
+  body("partName").trim().isLength({ min: 1 }).escape().withMessage("Part must have a name."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("Part must have a price.").isNumeric().withMessage("Price can be numbers (with a decimal point) only."),
+  body("invCount").optional({ checkFalsy: true }).trim().escape().isNumeric(),
+  body("manf").optional({ checkFalsy: true }).trim().escape(),
+  body("type").optional({ checkFalsy: true }).trim().escape(),
+  body("specs").optional({ checkFalsy: true }).trim().escape(),
+  body("sizeInfo").optional({ checkFalsy: true }).trim().escape(),
+  // middleware function:
+  (req, res, next) => {
+    // validationResult
+    const errors = validationResult(req);
+
+    Service.find({ serviceType: "Part" }).exec(function (err, results) {
+      if (err) { return next(err); }
+      // convert strings to arrays
+      let specsArray = req.body.specs.split(",");
+      let sizeInfoArray = req.body.sizeInfo.split(",");
+      // iterate to remove whitespace from array eles
+      for (let i = 0; i < specsArray.length; i++) {
+        specsArray[i] = specsArray[i].trim();
+      }
+      for (let i = 0; i < sizeInfoArray.length; i++) {
+        sizeInfoArray[i] = sizeInfoArray[i].trim();
+      }
+      // check for and remove blank terminal element
+      if (specsArray[specsArray.length-1]==="") {
+        specsArray.pop();
+      }
+      if (sizeInfoArray[sizeInfoArray.length-1]==="") {
+        sizeInfoArray.pop();
+      }
+      // create part obj
+      var part = new Part({
+        _id: req.params.id,
+        name: req.body.partName,
+        price: req.body.price,
+        manf: req.body.manf,
+        type: req.body.type,
+        invCount: req.body.invCount,
+        specs: specsArray,
+        sizeInfo: sizeInfoArray,
+        services: results,
+      });
+      // check validationResult for errors
+      if (!errors.isEmpty()) {
+        // there are errors - re-render form with scrubbed data and error messages
+        res.render("part_form", {
+          title: `Update Part: ${part.manf} ${part.name} ${part.type}`,
+          part: part,
+          errors: errors.array(),
+        });
+      } else {
+        // data OK, update the document
+        Part.findByIdAndUpdate(req.params.id, part, {}, function (err, thepart) {
+          if (err) { return next(err); }
+          // success, so redirect to updated page
+          res.redirect(thepart.url);
+        });
+      }
+    });
+  }
+];
 
 // Display form for part delete GET
 exports.part_delete_get = function (req, res) {

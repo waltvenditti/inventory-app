@@ -188,7 +188,7 @@ exports.bike_update_post = [
       } else {
         Bike.findByIdAndUpdate(req.params.id, bike, {}, function (err, thebike) {
           if (err) { return next(err); }
-          // Successful so redirect to page of new bike
+          // Successful so redirect to updated page
           res.redirect(thebike.url);
         })
       }
