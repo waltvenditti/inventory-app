@@ -16,6 +16,13 @@ block content
   p #[strong Brakes: ] #{bike.brakes}
   p #[strong Tires: ] #{bike.tires}
 
-  p Are you sure you want to delete this bike? This will remove the bike from the inventory entirely regardless of inventory count. To adjust the inventory count, use the Update Bike feature on the bike's 
-    a(href=bike.url)info page. 
+  p Are you sure you want to delete this bike? This will completely remove the bike from the inventory entirely regardless of inventory count. To adjust the inventory count, use the Update Bike feature on the bike's 
+    a(href=bike.url) info page
+    |. 
+  
+  form(method="POST" action="")
+    div  
+      input(type="hidden" name="bikeid" required="true" value=bike._id)
+
+      button(type="submit") Delete
   

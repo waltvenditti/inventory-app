@@ -150,5 +150,16 @@ exports.bike_delete_get = function (req, res) {
 
 // Process request for bike delete POST
 exports.bike_delete_post = function (req, res) {
-  
+  Bike.findById(req.body.bikeid).exec(function (err, bike) {
+    if (err) { return next(err); }
+    if (bike=="undefined") {
+      var error = new Error("Bike not found in database");
+      error.status = 404;
+      return next(error);
+    }
+    Bike.findByIdAndRemove(req.body.bikeid, function (err) {
+      if (err) { return next(err); }
+      res.redirect("/index/bikes/");
+    })
+  });
 };
