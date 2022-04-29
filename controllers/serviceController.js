@@ -99,13 +99,51 @@ exports.service_create_post = [
 
 // Display form for service update GET
 exports.service_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: service update get");
+  Service.findById(req.params.id).exec(function (err, service) {
+    if (err) { return next(err); }
+    if (service===null) {
+      res.redirect("/index/services");
+    } 
+    res.render("service_form", {
+      title: `Update Service: ${service.service}`,
+      service: service,
+    });
+  })
 };
 
 // Process service update POST request
-exports.service_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: service update post");
-};
+exports.service_update_post = [
+  // Validate and sanitize all fields
+  body("serviceName").trim().isLength({ min: 1 }).escape().withMessage("Service must have a name."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("The service must have a price.").isNumeric().withMessage("Price can only be numbers (with a decimal point)."),
+  body("desc").optional({ checkFalsy: true }).trim().escape(),
+  body("serviceType").optional({ checkFalsy: true }).trim().escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    var service = new Service({
+      _id: req.params.id,
+      service: req.body.serviceName,
+      price: req.body.price,
+      desc: req.body.desc,
+      serviceType: req.body.serviceType,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("service_form", {
+        title: "Add New Service",
+        service: service,
+        errors: errors.array(),
+      })
+    } else {
+      Service.findByIdAndUpdate(req.params.id, service, {}, function (err, theservice) {
+        if (err) { return next(err); }
+        res.redirect(theservice.url);
+      });
+    }
+  }
+];
 
 // Display form for service delete GET
 exports.service_delete_get = function (req, res) {

@@ -6,7 +6,7 @@ block content
   form(method="POST" action="") 
     div.form-group 
       label(for="serviceName") Service: 
-      input(type="text" placeholder="REQUIRED" name="serviceName" required="true" value=(service===undefined ? "" : service.name))
+      input(type="text" placeholder="REQUIRED" name="serviceName" required="true" value=(service===undefined ? "" : service.service))
     div.form-group 
       label(for="price") Price: $
       input(type="number" placeholder="REQUIRED" step="0.01" name="price" required="true" value=(service===undefined ? "" : service.price))
