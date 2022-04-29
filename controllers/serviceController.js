@@ -1,6 +1,8 @@
 var Service = require("../models/service");
 
 var async = require("async");
+const { body, validationResult } = require("express-validator");
+const { resetWatchers } = require("nodemon/lib/monitor/watch");
 
 // Display list of all services
 exports.service_list = function (req, res, next) {
@@ -62,9 +64,37 @@ exports.service_create_get = function (req, res) {
 };
 
 // Display service create on POST
-exports.service_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: service create post");
-};
+exports.service_create_post = [
+  // Validate and sanitize all fields
+  body("serviceName").trim().isLength({ min: 1 }).escape().withMessage("Service must have a name."),
+  body("price").trim().isLength({ min: 1 }).escape().withMessage("The service must have a price.").isNumeric().withMessage("Price can only be numbers (with a decimal point)."),
+  body("desc").optional({ checkFalsy: true }).trim().escape(),
+  body("serviceType").optional({ checkFalsy: true }).trim().escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    var service = new Service({
+      service: req.body.serviceName,
+      price: req.body.price,
+      desc: req.body.desc,
+      serviceType: req.body.serviceType,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("service_form", {
+        title: "Add New Service",
+        service: service,
+        errors: errors.array(),
+      })
+    } else {
+      service.save(function (err) {
+        if (err) { return next(err); }
+        res.redirect(service.url);
+      });
+    }
+  }
+];
 
 // Display form for service update GET
 exports.service_update_get = function (req, res) {
