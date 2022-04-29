@@ -11,7 +11,8 @@ var app = express();
 
 // connect to mongodb
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://waltvenditti:inventory-app-db@cluster0.yanjk.mongodb.net/bikeshop_inventory?retryWrites=true&w=majority';
+var dev_db_url = 'mongodb+srv://waltvenditti:inventory-app-db@cluster0.yanjk.mongodb.net/bikeshop_inventory?retryWrites=true&w=majority';
+var mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
