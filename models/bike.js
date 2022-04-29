@@ -16,7 +16,6 @@ var BikeSchema = new Schema (
     class: {type: String, enum: ["Street", "Gravel", "Mountain"]},
     price: {type: Number, required: true},
     invCount: {type: Number},
-    services: [{type: Schema.Types.ObjectId, ref: "Service"}]
   }
 )
 

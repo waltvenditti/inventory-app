@@ -47,7 +47,6 @@ exports.part_list = function (req, res, next) {
 // Display info page for a specific part
 exports.part_info = function (req, res, next) {
   Part.findById(req.params.id)
-    .populate("services")
     .exec(function (err, part) {
       if (err) { return next(err); 0}
       if (part == null) {
@@ -55,10 +54,14 @@ exports.part_info = function (req, res, next) {
         err.status = 404;
         return next(err);
       }
-      res.render("part_info", {
-        title: `${part.manf} ${part.name} ${part.type}`,
-        part: part,
-      });
+      Service.find({ serviceType: part.type }).exec(function (err, services) {
+        if (err) { return next(err); }
+        res.render("part_info", {
+          title: `${part.manf} ${part.name} ${part.type}`,
+          part: part,
+          services: services,
+        });
+      })
     });
 };
 
@@ -83,50 +86,46 @@ exports.part_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    Service.find({ serviceType: req.body.type }).sort({ service: 1 }).exec(function (err, results) {
-      if (err) { return next(err); }
-      // convert strings to arrays
-      let specsArray = req.body.specs.split(",");
-      let sizeInfoArray = req.body.sizeInfo.split(",");
-      // iterate to remove whitespace from array eles
-      for (let i = 0; i < specsArray.length; i++) {
-        specsArray[i] = specsArray[i].trim();
-      }
-      for (let i = 0; i < sizeInfoArray.length; i++) {
-        sizeInfoArray[i] = sizeInfoArray[i].trim();
-      }
-      // check for and remove blank terminal element
-      if (specsArray[specsArray.length-1]==="") {
-        specsArray.pop();
-      }
-      if (sizeInfoArray[sizeInfoArray.length-1]==="") {
-        sizeInfoArray.pop();
-      }
-      // create part obj
-      var part = new Part({
-        name: req.body.partName,
-        price: req.body.price,
-        manf: req.body.manf,
-        type: req.body.type,
-        invCount: req.body.invCount,
-        specs: specsArray,
-        sizeInfo: sizeInfoArray,
-        services: results,
-      });
-      // check errors empty
-      if (!errors.isEmpty()) {
-        res.render("part_form", {
-          title: "Add New Part",
-          part: part,
-          errors: errors.array(),
-        })
-      } else {
-        part.save(function (err) {
-          if (err) { return next(err); }
-          res.redirect(part.url);
-        })
-      }
+    // convert strings to arrays
+    let specsArray = req.body.specs.split(",");
+    let sizeInfoArray = req.body.sizeInfo.split(",");
+    // iterate to remove whitespace from array eles
+    for (let i = 0; i < specsArray.length; i++) {
+      specsArray[i] = specsArray[i].trim();
+    }
+    for (let i = 0; i < sizeInfoArray.length; i++) {
+      sizeInfoArray[i] = sizeInfoArray[i].trim();
+    }
+    // check for and remove blank terminal element
+    if (specsArray[specsArray.length-1]==="") {
+      specsArray.pop();
+    }
+    if (sizeInfoArray[sizeInfoArray.length-1]==="") {
+      sizeInfoArray.pop();
+    }
+    // create part obj
+    var part = new Part({
+      name: req.body.partName,
+      price: req.body.price,
+      manf: req.body.manf,
+      type: req.body.type,
+      invCount: req.body.invCount,
+      specs: specsArray,
+      sizeInfo: sizeInfoArray,
     });
+    // check errors empty
+    if (!errors.isEmpty()) {
+      res.render("part_form", {
+        title: "Add New Part",
+        part: part,
+        errors: errors.array(),
+      })
+    } else {
+      part.save(function (err) {
+        if (err) { return next(err); }
+        res.redirect(part.url);
+      })
+    }
   },
 ];
 
@@ -160,54 +159,50 @@ exports.part_update_post = [
     // validationResult
     const errors = validationResult(req);
 
-    Service.find({ serviceType: req.body.type }).exec(function (err, results) {
-      if (err) { return next(err); }
-      // convert strings to arrays
-      let specsArray = req.body.specs.split(",");
-      let sizeInfoArray = req.body.sizeInfo.split(",");
-      // iterate to remove whitespace from array eles
-      for (let i = 0; i < specsArray.length; i++) {
-        specsArray[i] = specsArray[i].trim();
-      }
-      for (let i = 0; i < sizeInfoArray.length; i++) {
-        sizeInfoArray[i] = sizeInfoArray[i].trim();
-      }
-      // check for and remove blank terminal element
-      if (specsArray[specsArray.length-1]==="") {
-        specsArray.pop();
-      }
-      if (sizeInfoArray[sizeInfoArray.length-1]==="") {
-        sizeInfoArray.pop();
-      }
-      // create part obj
-      var part = new Part({
-        _id: req.params.id,
-        name: req.body.partName,
-        price: req.body.price,
-        manf: req.body.manf,
-        type: req.body.type,
-        invCount: req.body.invCount,
-        specs: specsArray,
-        sizeInfo: sizeInfoArray,
-        services: results,
-      });
-      // check validationResult for errors
-      if (!errors.isEmpty()) {
-        // there are errors - re-render form with scrubbed data and error messages
-        res.render("part_form", {
-          title: `Update Part: ${part.manf} ${part.name} ${part.type}`,
-          part: part,
-          errors: errors.array(),
-        });
-      } else {
-        // data OK, update the document
-        Part.findByIdAndUpdate(req.params.id, part, {}, function (err, thepart) {
-          if (err) { return next(err); }
-          // success, so redirect to updated page
-          res.redirect(thepart.url);
-        });
-      }
+    // convert strings to arrays
+    let specsArray = req.body.specs.split(",");
+    let sizeInfoArray = req.body.sizeInfo.split(",");
+    // iterate to remove whitespace from array eles
+    for (let i = 0; i < specsArray.length; i++) {
+      specsArray[i] = specsArray[i].trim();
+    }
+    for (let i = 0; i < sizeInfoArray.length; i++) {
+      sizeInfoArray[i] = sizeInfoArray[i].trim();
+    }
+    // check for and remove blank terminal element
+    if (specsArray[specsArray.length-1]==="") {
+      specsArray.pop();
+    }
+    if (sizeInfoArray[sizeInfoArray.length-1]==="") {
+      sizeInfoArray.pop();
+    }
+    // create part obj
+    var part = new Part({
+      _id: req.params.id,
+      name: req.body.partName,
+      price: req.body.price,
+      manf: req.body.manf,
+      type: req.body.type,
+      invCount: req.body.invCount,
+      specs: specsArray,
+      sizeInfo: sizeInfoArray,
     });
+    // check validationResult for errors
+    if (!errors.isEmpty()) {
+      // there are errors - re-render form with scrubbed data and error messages
+      res.render("part_form", {
+        title: `Update Part: ${part.manf} ${part.name} ${part.type}`,
+        part: part,
+        errors: errors.array(),
+      });
+    } else {
+      // data OK, update the document
+      Part.findByIdAndUpdate(req.params.id, part, {}, function (err, thepart) {
+        if (err) { return next(err); }
+        // success, so redirect to updated page
+        res.redirect(thepart.url);
+      });
+    }
   }
 ];
 

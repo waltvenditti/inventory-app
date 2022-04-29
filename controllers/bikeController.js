@@ -45,20 +45,29 @@ exports.bike_list = function (req, res, next) {
 
 // Display info page for a specific bike
 exports.bike_info = function (req, res, next) {
-  Bike.findById(req.params.id)
-    .populate("services")
-    .exec(function (err, bike) {
+  async.parallel(
+    {
+      bike: function (callback) {
+        Bike.findById(req.params.id).exec(callback);
+      },
+      services: function (callback) {
+        Service.find({  serviceType: "Bike" }).sort({ service: 1 }).exec(callback);
+      },
+    },
+    function (err, results) {
       if (err) { return next(err); }
-      if (bike == null) {
+      if (results.bike == null) {
         var err = new Error("Bike not found");
         err.status = 404;
         return next(err);
       }
       res.render("bike_info", {
-        title: `${bike.manf} ${bike.bike}`,
-        bike: bike,
+        title: `${results.bike.manf} ${results.bike.bike}`,
+        bike: results.bike,
+        services: results.services,
       });
-    });
+    }
+  )
 };
 
 // Display bike create form on GET
@@ -89,38 +98,35 @@ exports.bike_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    Service.find({ serviceType: "Bike" }).sort({ service: 1 }).exec(function (err, results) {
-      if (err) { return next(err); }
-      var bike = new Bike({
-        bike: req.body.bikeName,
-        price: req.body.price,
-        year: req.body.year,
-        manf: req.body.manf,
-        frame: req.body.frame,
-        wheels: req.body.wheels,
-        crankset: req.body.crankset,
-        drivetrain: req.body.drivetrain,
-        brakes: req.body.brakes,
-        tires: req.body.tires,
-        invCount: req.body.invCount,
-        class: req.body.class,
-        services: results,
+    var bike = new Bike({
+      bike: req.body.bikeName,
+      price: req.body.price,
+      year: req.body.year,
+      manf: req.body.manf,
+      frame: req.body.frame,
+      wheels: req.body.wheels,
+      crankset: req.body.crankset,
+      drivetrain: req.body.drivetrain,
+      brakes: req.body.brakes,
+      tires: req.body.tires,
+      invCount: req.body.invCount,
+      class: req.body.class,
+    })
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized./validated data and error messages
+      res.render("bike_form", {
+        title: "Add New Bike",
+        bike: bike,
+        errors: errors.array(),
+      });
+    } else {
+      bike.save(function (err) {
+        if (err) { return next(err); }
+        // Successful so redirect to page of new bike
+        res.redirect(bike.url);
       })
-      if (!errors.isEmpty()) {
-        // There are errors. Render form again with sanitized./validated data and error messages
-        res.render("bike_form", {
-          title: "Add New Bike",
-          bike: bike,
-          errors: errors.array(),
-        });
-      } else {
-        bike.save(function (err) {
-          if (err) { return next(err); }
-          // Successful so redirect to page of new bike
-          res.redirect(bike.url);
-        })
-      }
-    });
+    }
   }
 ];
 
@@ -159,42 +165,38 @@ exports.bike_update_post = [
   // Process request after validation/sanitization
   (req, res, next) => {
     const errors = validationResult(req);
-    Service.find({ serviceType: "Bike" }).sort({ service: 1 }).exec(function (err, results) {
-      if (err) { return next(err); }
-      var bike = new Bike({
-        _id: req.params.id,
-        bike: req.body.bikeName,
-        price: req.body.price,
-        year: req.body.year,
-        manf: req.body.manf,
-        frame: req.body.frame,
-        wheels: req.body.wheels,
-        crankset: req.body.crankset,
-        drivetrain: req.body.drivetrain,
-        brakes: req.body.brakes,
-        tires: req.body.tires,
-        invCount: req.body.invCount,
-        class: req.body.class,
-        services: results,
-      })
-      if (!errors.isEmpty()) {
-        // There are errors. Render form again with sanitized./validated data and error messages
-        res.render("bike_form", {
-          title: "Update Bike",
-          bike: bike,
-          errors: errors.array(),
-        });
-        
-      } else {
-        Bike.findByIdAndUpdate(req.params.id, bike, {}, function (err, thebike) {
-          if (err) { return next(err); }
-          // Successful so redirect to updated page
-          res.redirect(thebike.url);
-        })
-      }
-    });
-  },
 
+    var bike = new Bike({
+      _id: req.params.id,
+      bike: req.body.bikeName,
+      price: req.body.price,
+      year: req.body.year,
+      manf: req.body.manf,
+      frame: req.body.frame,
+      wheels: req.body.wheels,
+      crankset: req.body.crankset,
+      drivetrain: req.body.drivetrain,
+      brakes: req.body.brakes,
+      tires: req.body.tires,
+      invCount: req.body.invCount,
+      class: req.body.class,
+    })
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized./validated data and error messages
+      res.render("bike_form", {
+        title: "Update Bike",
+        bike: bike,
+        errors: errors.array(),
+      });
+    } else {
+      Bike.findByIdAndUpdate(req.params.id, bike, {}, function (err, thebike) {
+        if (err) { return next(err); }
+        // Successful so redirect to updated page
+        res.redirect(thebike.url);
+      })
+    }
+  },
 ];
 
 // Display form for bike delete GET

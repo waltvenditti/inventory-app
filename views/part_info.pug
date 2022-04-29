@@ -20,7 +20,7 @@ block content
   p #[strong Number in Stock: ]  #{part.invCount}
   p #[strong Services Available: ]
     ul
-      each service in part.services 
+      each service in services 
         li 
           a(href=service.url) #{service.service}
 

@@ -17,7 +17,7 @@ block content
   p #[strong Number in Stock: ]  #{bike.invCount}
   p #[strong Services Available: ]
     ul
-      each service in bike.services 
+      each service in services 
         li 
           a(href=service.url) #{service.service}
 

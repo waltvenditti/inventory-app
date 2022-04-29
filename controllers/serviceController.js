@@ -3,6 +3,7 @@ var Service = require("../models/service");
 var async = require("async");
 const { body, validationResult } = require("express-validator");
 const { resetWatchers } = require("nodemon/lib/monitor/watch");
+const part = require("../models/part");
 
 // Display list of all services
 exports.service_list = function (req, res, next) {
@@ -108,10 +109,30 @@ exports.service_update_post = function (req, res) {
 
 // Display form for service delete GET
 exports.service_delete_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: service delete get");
+  Service.findById(req.params.id).exec(function (err, service) {
+    if (err) { return next(err); }
+    if (service==null) {
+      res.redirect("/index/services");
+    }
+    res.render("service_delete", {
+      title: `Delete Service: ${service.service}`,
+      service: service,
+    })
+  })
 };
 
 // Process request for service delete POST
 exports.service_delete_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: service delete post");
+  Service.findById(req.body.serviceid).exec(function (err, service) {
+    if (err) { return next(err); }
+    if (service==="undefined") {
+      var error = new Error("Service not found");
+      error.status = 404;
+      return next(error);
+    }
+    Service.findByIdAndRemove(req.body.serviceid, function (err) {
+      if (err) { return next(err); }
+      res.redirect("/index/services/");
+    });
+  })
 };

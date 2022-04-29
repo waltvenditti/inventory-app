@@ -11,7 +11,6 @@ var PartSchema = new Schema (
     sizeInfo: [{type: String}],
     price: {type: Number, required: true},
     invCount: {type: Number},
-    services: [{type: Schema.Types.ObjectId, ref: 'Service'}]
   }
 )
 

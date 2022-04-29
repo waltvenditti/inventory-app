@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  p #[strong Service: ] #{service.service}
+  p #[strong Service Type: ] #{service.serviceType}
+  p #[strong Description: ] #{service.desc}
+  p #[strong Price: ] $#{service.price}
+
+
+  p Are you sure you want to delete this service? This will completely remove the service from the inventory system.
+  
+  form(method="POST" action="")
+    div  
+      input(type="hidden" name="serviceid" required="true" value=service._id)
+
+      button(type="submit") Delete
