@@ -7,7 +7,7 @@ block content
   ul
     each wheel in wheel_list
       li(class="list-items")
-        a(href=wheel.url)  #{wheel.manf} - #{wheel.name} - $#{wheel.price}
+        a(href=wheel.url)  #{wheel.manf} #{wheel.name} - $#{wheel.price}
         |: #{wheel.invCount} in stock
     
     else
@@ -17,7 +17,7 @@ block content
   ul
     each crankset in crankset_list
       li(class="list-items")
-        a(href=crankset.url)  #{crankset.manf} - #{crankset.name} - $#{crankset.price}
+        a(href=crankset.url)  #{crankset.manf} #{crankset.name} - $#{crankset.price}
         |: #{crankset.invCount} in stock
     
     else
@@ -27,7 +27,7 @@ block content
   ul
     each drivetrain in drivetrain_list
       li(class="list-items")
-        a(href=drivetrain.url)  #{drivetrain.manf} - #{drivetrain.name} - $#{drivetrain.price}
+        a(href=drivetrain.url)  #{drivetrain.manf} #{drivetrain.name} - $#{drivetrain.price}
         |: #{drivetrain.invCount} in stock
     
     else
@@ -37,7 +37,7 @@ block content
   ul
     each tire in tire_list
       li(class="list-items")
-        a(href=tire.url)  #{tire.manf} - #{tire.name} - $#{tire.price}
+        a(href=tire.url)  #{tire.manf} - #{tire.name} $#{tire.price}
         |: #{tire.invCount} in stock
     
     else

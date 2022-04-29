@@ -56,7 +56,9 @@ exports.service_info = function (req, res) {
 
 // Display service create form on GET
 exports.service_create_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: service create get");
+  res.render("service_form", {
+    title: "Add New Service"
+  });
 };
 
 // Display service create on POST

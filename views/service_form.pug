@@ -1,0 +1,37 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  form(method="POST" action="") 
+    div.form-group 
+      label(for="serviceName") Service: 
+      input(type="text" placeholder="REQUIRED" name="serviceName" required="true" value=(service===undefined ? "" : service.name))
+    div.form-group 
+      label(for="price") Price: $
+      input(type="number" placeholder="REQUIRED" step="0.01" name="price" required="true" value=(service===undefined ? "" : service.price))
+    div.form-group
+      label Service Category: 
+      br
+      div 
+        input(type="radio" name="serviceType" id="bike" value="Bike" checked=(service===undefined ? false : service.serviceType==="Bike") required)
+        label(for="bike") Bike 
+      div 
+        input(type="radio" name="serviceType" id="wheel" value="Wheel" checked=(service===undefined ? false : service.serviceType==="Wheel"))
+        label(for="wheel") Part - Wheel
+      div 
+        input(type="radio" name="serviceType" id="crankset" value="Crankset" checked=(service===undefined ? false : service.serviceType==="Crankset"))
+        label(for="crankset") Part - Crankset 
+      div 
+        input(type="radio" name="serviceType" id="drivetrain" value="Drivetrain" checked=(service===undefined ? false : service.serviceType==="Drivetrain"))
+        label(for="drivetrain") Part - Drivetrain 
+      div 
+        input(type="radio" name="serviceType" id="tire" value="Tire" checked=(service===undefined ? false : service.serviceType==="Tire"))
+        label(for="tire") Part - Tire 
+    div.form-group-textarea
+      label(for="desc") Description of Service: 
+      textarea(name="desc") #{(service===undefined ? "" : service.desc)}
+    
+
+
+    
