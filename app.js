@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require("dotenv").config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -11,7 +12,7 @@ var app = express();
 
 // connect to mongodb
 var mongoose = require('mongoose');
-var dev_db_url = 'mongodb+srv://waltvenditti:inventory-app-db@cluster0.yanjk.mongodb.net/bikeshop_inventory?retryWrites=true&w=majority';
+var dev_db_url = process.env.DEV_DB_URL;
 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
